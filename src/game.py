@@ -14,21 +14,30 @@ class Game(object):
         self.summons = []   # 召唤物列表
         self.hasPlant = []  # 掌控植物生成的哈希表
         self.gold = 100     # 金币数量
+        self.goldFont = pygame.font.Font(None, 60)       # pygame自带的字体对象
         for i in range(GAME_COUNT[0]):
             col = []
             for j in range(GAME_COUNT[1]):
                 col.append(0)
             self.hasPlant.append(col)
 
+    def randerFont(self):
+        textImage = self.goldFont.render("Gold: " + str(self.gold), True, (0, 0, 0))
+        self.ds.blit(textImage, (13,23))
+        textImage = self.goldFont.render("Gold: " + str(self.gold), True, (255, 255, 255))
+        self.ds.blit(textImage, (10,23))
+
     def draw(self):
+        # 绘制后花园，遍历植物列表绘制植物，遍历召唤物列表，绘制召唤物
+        # 防止出现植物在花园贴图后面，召唤物被植物挡住的情况
         self.back.draw(self.ds)
         for plant in self.plants:
             plant.draw(self.ds)
         for summon in self.summons:
             summon.draw(self.ds)
+        self.randerFont()
 
     def update(self):
-        print('gold: ', self.gold)
         self.back.update()
         for plant in self.plants:
             plant.update()
@@ -44,10 +53,13 @@ class Game(object):
         y = (pos[1] - LEFT_TOP[1]) // GRID_SIZE[1]
         return x, y
 
-    def addSunFlower(self, x, y):
-        # 种植物，检测并修改哈希表的数值，将位置添加到向日葵列表
+    def addSunFlower(self, x, y, objId=None):
+        # 种植物，检测并修改哈希表的数值，检测现在的金币数量是否能种植物，将位置添加到向日葵列表
         if self.hasPlant[x][y] == 1:
             return
+        if self.gold < data_object.data[objId]["PRICE"]:
+            return
+        self.gold -= data_object.data[objId]["PRICE"]
         self.hasPlant[x][y] = 1
         pos = LEFT_TOP[0] + x * GRID_SIZE[0], LEFT_TOP[1] + y * GRID_SIZE[1]
         sf = sunflower.SunFlower(SUNFLOWER_ID, pos)
@@ -67,17 +79,14 @@ class Game(object):
         return False
 
     def checkAddPlant(self, mousePos, objId):
-        # 检测是否可以种植植物，获取鼠标点击位置，添加可种植植物的位置限制，检测现在的金币数量是否能种植物
+        # 检测是否可以种植植物，获取鼠标点击位置，添加可种植植物的位置限制
         x, y = self.getIndexByPos(mousePos)
         if x < 0 or x >= GAME_COUNT[0]:
             return
         if y < 0 or y >= GAME_COUNT[1]:
             return
-        if self.gold < data_object.data[objId]["PRICE"]:
-            return
-        self.gold -= data_object.data[objId]["PRICE"]
         if objId == SUNFLOWER_ID:
-            self.addSunFlower(x, y)
+            self.addSunFlower(x, y, objId)
 
     def mouseClickHandler(self, btn):
         # 获取鼠标点击,bin的值为0代表左键，为1代表右键。获取鼠标位置

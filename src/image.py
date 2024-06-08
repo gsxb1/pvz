@@ -37,4 +37,5 @@ class Image(pygame.sprite.Sprite):
         self.pos[0] -= 0.3
 
     def draw(self, ds):
+        # 绘制图像
         ds.blit(self.image, self.getReact())
