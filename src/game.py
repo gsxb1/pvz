@@ -32,9 +32,14 @@ class Game(object):
         for summon in self.summons:
             summon.update()
 
+    def getIndexByPos(self, pos):
+        x = (pos[0] - LEFT_TOP[0]) // GRID_SIZE[0]
+        y = (pos[1] - LEFT_TOP[1]) // GRID_SIZE[1]
+        return x, y
+
     def addSunFlower(self, x ,y):
         pos = LEFT_TOP[0] + x * GRID_SIZE[0], LEFT_TOP[1] + y * GRID_SIZE[1]
-        sf = sunflower.SunFlower(3, pos)
+        sf = sunflower.SunFlower(SUNFLOWER_ID, pos)
         self.plants.append(sf)
 
     def cheackLooct(self, mosousePos):
@@ -43,12 +48,15 @@ class Game(object):
 
     def checkAddPlant(self, mosousePos, objId):
         # 添加植物
-        pass
+        x, y = self.getIndexByPos(mosousePos)
+        if objId == SUNFLOWER_ID:
+            self.addSunFlower(x, y)
 
     def mouseClickHandler(self, btn):
         mosousePos = pygame.mouse.get_pos()
         self.cheackLooct(mosousePos)
-        self.checkAddPlant(mosousePos)
+        if btn == 1:
+            self.checkAddPlant(mosousePos, SUNFLOWER_ID)
 
 
 
