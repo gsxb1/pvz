@@ -31,6 +31,9 @@ class ObjectBase(image.Image):
     def getSpeed(self):
         return self.getData()["SPEED"]
 
+    def canLoot(self):
+        return self.getData()["CAN_LOOT"]
+
     def update(self):
         self.checkSummon()
         self.checkImageIndex()

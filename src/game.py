@@ -48,13 +48,22 @@ class Game(object):
         sf = sunflower.SunFlower(SUNFLOWER_ID, pos)
         self.plants.append(sf)
 
-    def cheackLooct(self, mosousePos):
+    def cheackLooct(self, mousePos):
         # 捡阳光
-        pass
+        # 遍历召唤物，查看他们可不可以拾取，获取召唤物的矩形，检查鼠标是否点击
+        for summon in self.summons:
+            if not summon.canLoot():
+                continue
+            rect = summon.getReact()
+            if rect.collidepoint(mousePos):
+                self.summons.remove(summon)
+                return True
+        return False
 
-    def checkAddPlant(self, mosousePos, objId):
-        # 添加植物
-        x, y = self.getIndexByPos(mosousePos)
+
+    def checkAddPlant(self, mousePos, objId):
+        # 添加植物，获取鼠标点击位置，添加可种植植物的限制
+        x, y = self.getIndexByPos(mousePos)
         if x < 0 or x >= GAME_COUNT[0]:
             return
         if y < 0 or y >= GAME_COUNT[1]:
@@ -63,8 +72,10 @@ class Game(object):
             self.addSunFlower(x, y)
 
     def mouseClickHandler(self, btn):
-        mosousePos = pygame.mouse.get_pos()
-        self.cheackLooct(mosousePos)
+        mousePos = pygame.mouse.get_pos()
+        if self.cheackLooct(mousePos):
+            # 如果拾取了阳光，那就不能进行种植逻辑
+            return
         if btn == 1:
-            self.checkAddPlant(mosousePos, SUNFLOWER_ID)
+            self.checkAddPlant(mousePos, SUNFLOWER_ID)
 
