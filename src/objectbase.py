@@ -34,6 +34,9 @@ class ObjectBase(image.Image):
     def canLoot(self):
         return self.getData()["CAN_LOOT"]
 
+    def getPrice(self):
+        return self.getData()["PRICE"]
+
     def update(self):
         self.checkSummon()
         self.checkImageIndex()

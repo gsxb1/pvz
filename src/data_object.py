@@ -9,7 +9,8 @@ data = {
         "POSITION_CD": 0.008,                        #图片刷新时间
         "SIZE": (40, 40),                            #尺寸
         "SPEED": (4, 0),                             #速度，有正负代表在坐标系的移动
-        "CAN_LOOT" : False
+        "CAN_LOOT" : False,                          #是否可以被拾取
+        "PRICE" : 0,                                 #价值
     },
     1:{
         # 僵尸
@@ -20,10 +21,11 @@ data = {
         "SUMMON_CD": -1,
         "SIZE": (100, 128),
         "SPEED": (-2.5, 0),
-        "CAN_LOOT" : False
+        "CAN_LOOT" : False,
+        "PRICE" : 0,
     },
     2:{
-        # 向日葵
+        # 太阳花
         "PATH": "../pic/other/sunlight/%d.png",
         "IMAGE_INDEX_MAX": 30,
         "IMAGE_INDEX_CD": 0.06,
@@ -31,7 +33,8 @@ data = {
         "SUMMON_CD": -1,
         "SIZE": (80, 80),
         "SPEED": (0, 2),
-        "CAN_LOOT": True
+        "CAN_LOOT": True,
+        "PRICE" : 5,
     },
     3:{
         # 向日葵
@@ -42,6 +45,7 @@ data = {
         "SUMMON_CD": 8,
         "SIZE": (128, 128),
         "SPEED": (0, 0),
-        "CAN_LOOT": False
+        "CAN_LOOT": False,
+        "PRICE": 30,
     },
 }
