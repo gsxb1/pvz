@@ -5,3 +5,4 @@ GRID_SIZE = (76, 96)
 GAME_COUNT = (9, 5)
 PATH_BACK = "../pic/other/back.png"
 SUNFLOWER_ID = 3
+PEASHOOTER_ID = 4

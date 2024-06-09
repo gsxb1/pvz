@@ -3,6 +3,7 @@ import pygame
 import image
 import sunflower
 import data_object
+import peashooter
 from const import *
 
 
@@ -20,6 +21,8 @@ class Game(object):
             for j in range(GAME_COUNT[1]):
                 col.append(0)
             self.hasPlant.append(col)
+
+        self.addPeaShooter(0, 0)
 
     def randerFont(self):
         textImage = self.goldFont.render("Gold: " + str(self.gold), True, (0, 0, 0))
@@ -53,16 +56,18 @@ class Game(object):
         y = (pos[1] - LEFT_TOP[1]) // GRID_SIZE[1]
         return x, y
 
-    def addSunFlower(self, x, y, objId=None):
-        # 种植物，检测并修改哈希表的数值，检测现在的金币数量是否能种植物，将位置添加到向日葵列表
-        if self.hasPlant[x][y] == 1:
-            return
-        if self.gold < data_object.data[objId]["PRICE"]:
-            return
-        self.gold -= data_object.data[objId]["PRICE"]
+    def addSunFlower(self, x, y):
+        # 种植物，检测并修改哈希表的数值，将位置添加到向日葵列表
         self.hasPlant[x][y] = 1
         pos = LEFT_TOP[0] + x * GRID_SIZE[0], LEFT_TOP[1] + y * GRID_SIZE[1]
         sf = sunflower.SunFlower(SUNFLOWER_ID, pos)
+        self.plants.append(sf)
+
+    def addPeaShooter(self, x, y):
+        # 种植物，检测并修改哈希表的数值，将位置添加到向日葵列表
+        self.hasPlant[x][y] = 1
+        pos = LEFT_TOP[0] + x * GRID_SIZE[0], LEFT_TOP[1] + y * GRID_SIZE[1]
+        sf = peashooter.PeaShooter(PEASHOOTER_ID, pos)
         self.plants.append(sf)
 
     def cheackLooct(self, mousePos):
@@ -79,14 +84,20 @@ class Game(object):
         return False
 
     def checkAddPlant(self, mousePos, objId):
-        # 检测是否可以种植植物，获取鼠标点击位置，添加可种植植物的位置限制
+        # 检测是否可以种植植物。获取鼠标点击位置，添加可种植植物的位置限制，检测现在的金币数量是否能种植物，
         x, y = self.getIndexByPos(mousePos)
         if x < 0 or x >= GAME_COUNT[0]:
             return
         if y < 0 or y >= GAME_COUNT[1]:
             return
+        if self.hasPlant[x][y] == 1:
+            return
+        if self.gold < data_object.data[objId]["PRICE"]:
+            return
+
+        self.gold -= data_object.data[objId]["PRICE"]
         if objId == SUNFLOWER_ID:
-            self.addSunFlower(x, y, objId)
+            self.addSunFlower(x, y)
 
     def mouseClickHandler(self, btn):
         # 获取鼠标点击,bin的值为0代表左键，为1代表右键。获取鼠标位置
