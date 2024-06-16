@@ -1,9 +1,12 @@
 # 游戏的主逻辑
+import random
 import pygame
 import image
 import sunflower
 import data_object
+import time
 import peashooter
+import zombiebase
 from const import *
 
 
@@ -13,9 +16,11 @@ class Game(object):
         self.back = image.Image("../pic/other/back.png", 0, (0, 0), GAME_SIZE, 0)
         self.plants = []    # 向日葵列表
         self.summons = []   # 召唤物列表
+        self.zombies = []   # 僵尸列表
         self.hasPlant = []  # 掌控植物生成的哈希表
         self.gold = 100     # 金币数量
         self.goldFont = pygame.font.Font(None, 60)       # pygame自带的字体对象
+        self.zombieGenertatTime = 0
         for i in range(GAME_COUNT[0]):
             col = []
             for j in range(GAME_COUNT[1]):
@@ -36,6 +41,8 @@ class Game(object):
             plant.draw(self.ds)
         for summon in self.summons:
             summon.draw(self.ds)
+        for zombie in self.zombies:
+            zombie.draw(self.ds)
         self.randerFont()
 
     def update(self):
@@ -47,6 +54,13 @@ class Game(object):
                 self.summons.append(summon)  # 由我的表格来管理
         for summon in self.summons:
             summon.update()
+        for zombis in self.zombies:
+            zombis.update()
+        # 僵尸的刷新cd,僵尸的刷新位置
+        if time.time() - self.zombieGenertatTime > ZOMBIE_BORN_CD:
+            self.zombieGenertatTime = time.time()
+            self.addZombie(ZOMBIE_BORN_X, random.randint(0, GAME_COUNT[1]-1))
+
 
     def getIndexByPos(self, pos):
         # 获取鼠标相对于花园的位置
@@ -67,6 +81,13 @@ class Game(object):
         pos = LEFT_TOP[0] + x * GRID_SIZE[0], LEFT_TOP[1] + y * GRID_SIZE[1]
         sf = peashooter.PeaShooter(PEASHOOTER_ID, pos)
         self.plants.append(sf)
+
+    def addZombie(self, x, y):
+        # 释放僵尸
+        pos = LEFT_TOP[0] + x * GRID_SIZE[0], LEFT_TOP[1] + y * GRID_SIZE[1]
+        zm = zombiebase.ZomBieBase(1, pos)
+        self.plants.append(zm)
+
 
     def cheackLooct(self, mousePos):
         # 捡阳光
