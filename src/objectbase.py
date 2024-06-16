@@ -51,7 +51,7 @@ class ObjectBase(image.Image):
 
     def checkImageIndex(self):
         # 帧动画
-        if time.time() - self.preIndexTime <= self.getPositionCD():
+        if time.time() - self.preIndexTime <= self.getImageIndexCD():
             return
         self.preIndexTime = time.time()
         idx = self.pathIndex + 1

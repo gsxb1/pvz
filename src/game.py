@@ -22,8 +22,6 @@ class Game(object):
                 col.append(0)
             self.hasPlant.append(col)
 
-        self.addPeaShooter(0, 0)
-
     def randerFont(self):
         textImage = self.goldFont.render("Gold: " + str(self.gold), True, (0, 0, 0))
         self.ds.blit(textImage, (13,23))
@@ -94,10 +92,11 @@ class Game(object):
             return
         if self.gold < data_object.data[objId]["PRICE"]:
             return
-
         self.gold -= data_object.data[objId]["PRICE"]
         if objId == SUNFLOWER_ID:
             self.addSunFlower(x, y)
+        elif objId == PEASHOOTER_ID:
+            self.addPeaShooter(x, y)
 
     def mouseClickHandler(self, btn):
         # 获取鼠标点击,bin的值为0代表左键，为1代表右键。获取鼠标位置
@@ -107,4 +106,6 @@ class Game(object):
             return
         if btn == 1:
             self.checkAddPlant(mousePos, SUNFLOWER_ID)
+        elif btn == 3:
+            self.checkAddPlant(mousePos, PEASHOOTER_ID)
 

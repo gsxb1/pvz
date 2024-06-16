@@ -40,8 +40,8 @@ data = {
         # 向日葵
         "PATH": "../pic/plant/sunflower/%d.png",
         "IMAGE_INDEX_MAX": 19,
-        "IMAGE_INDEX_CD": 0,
-        "POSITION_CD": 0.07,
+        "IMAGE_INDEX_CD": 0.07,
+        "POSITION_CD": -1,
         "SUMMON_CD": 8,
         "SIZE": (128, 128),
         "SPEED": (0, 0),
@@ -52,9 +52,9 @@ data = {
       # 豌豆射手
         "PATH": "../pic/plant/peashooter/%d.png",
         "IMAGE_INDEX_MAX": 15,
-        "IMAGE_INDEX_CD": 0.2,
-        "POSITION_CD": 0.5,
-        "SUMMON_CD": 5,
+        "IMAGE_INDEX_CD": 0.15,
+        "POSITION_CD": -1,
+        "SUMMON_CD": 6,
         "SIZE": (128, 128),
         "SPEED": (0, 0),
         "CAN_LOOT": False,
